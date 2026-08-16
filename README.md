@@ -55,7 +55,7 @@ The selected mode is stored per memory channel and for **VFO-A/VFO-B** in a cust
 
 ### PF2 modulation mode cycling
 
-PF2 can cycle directly through the four modulation modes:
+PF2 Long Press can cycle directly through the four modulation modes:
 
 ```text
 FM -> NFM -> AM -> NAM -> FM
