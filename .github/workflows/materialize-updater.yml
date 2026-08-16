@@ -22,14 +22,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .release-upload/chunk-* > /tmp/updater.zip.b64
-          base64 --decode /tmp/updater.zip.b64 > /tmp/updater.zip
-          echo '13dc36a83269cfe8a0221ac651f372bd3152663643024f47a8d104281d8b2f4b  /tmp/updater.zip' | sha256sum -c -
-          unzip -t /tmp/updater.zip
-          mkdir -p /tmp/rt830-release
-          unzip -o /tmp/updater.zip -d /tmp/rt830-release
-          mv /tmp/rt830-release/RT830_CName_BK4819_FullRX_FullVFO_PF2_4Mode_FIXED4x5_BOTH_AB_MEDIUM_LEFTSHIFT2_TEST_UPDATER.exe /tmp/rt830-release/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe
-          echo '90b3cbeca909ee083de175611d7f1b17472b2a7b6d43a83c78955b7a1d070d84  /tmp/rt830-release/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe' | sha256sum -c -
+          cat .release-upload/chunk-* > /tmp/updater.exe.xz.b64
+          base64 --decode /tmp/updater.exe.xz.b64 > /tmp/updater.exe.xz
+          echo 'c713845a5340144fc5392d8ab03fcf5fd4261953f321129972016988379cf04c  /tmp/updater.exe.xz' | sha256sum -c -
+          xz -dc /tmp/updater.exe.xz > /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe
+          echo '90b3cbeca909ee083de175611d7f1b17472b2a7b6d43a83c78955b7a1d070d84  /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe' | sha256sum -c -
 
       - name: Publish GitHub release asset
         env:
@@ -53,18 +50,10 @@ jobs:
           EOF
 
           if gh release view v1.0.0 >/dev/null 2>&1; then
-            gh release edit v1.0.0 \
-              --title 'Radtel RT-830 Custom Firmware v1.0.0' \
-              --notes-file /tmp/release-notes.md
-            gh release upload v1.0.0 \
-              /tmp/rt830-release/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe \
-              --clobber
+            gh release edit v1.0.0 --title 'Radtel RT-830 Custom Firmware v1.0.0' --notes-file /tmp/release-notes.md
+            gh release upload v1.0.0 /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe --clobber
           else
-            gh release create v1.0.0 \
-              /tmp/rt830-release/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe \
-              --target main \
-              --title 'Radtel RT-830 Custom Firmware v1.0.0' \
-              --notes-file /tmp/release-notes.md
+            gh release create v1.0.0 /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe --target main --title 'Radtel RT-830 Custom Firmware v1.0.0' --notes-file /tmp/release-notes.md
           fi
 
       - name: Remove one-time upload staging
