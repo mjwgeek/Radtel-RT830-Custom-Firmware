@@ -24,7 +24,7 @@ jobs:
           set -euo pipefail
           cat .release-upload/chunk-* > /tmp/updater.exe.xz.b64
           base64 --decode /tmp/updater.exe.xz.b64 > /tmp/updater.exe.xz
-          echo 'c713845a5340144fc5392d8ab03fcf5fd4261953f321129972016988379cf04c  /tmp/updater.exe.xz' | sha256sum -c -
+          echo '25b0dce55a8328200827139161b9badd85d3d7109f7895416c20ac05a78dc3a6  /tmp/updater.exe.xz' | sha256sum -c -
           xz -dc /tmp/updater.exe.xz > /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe
           echo '90b3cbeca909ee083de175611d7f1b17472b2a7b6d43a83c78955b7a1d070d84  /tmp/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe' | sha256sum -c -
 
