@@ -2,9 +2,11 @@
 
 Custom firmware and CHIRP support for the **Radtel RT-830**, with expanded receive/VFO coverage, full-resolution frequency display, channel names, four modulation modes, and additional radio controls exposed through CHIRP.
 
-> **Current release:** v1.0.0  
+> **Current public release:** v1.0.0  
 > **Firmware updater:** `firmware/Radtel_RT830_Custom_Firmware_Updater_v1.0.0.exe`  
 > **CHIRP driver:** `chirp/radtel_rt830_custom.py`
+
+> **Development note:** Experimental `v1.1.x` builds are currently being tested on real RT-830 hardware and are not yet published here as the stable updater. Current development work includes receive-only USB/LSB, RF gain control and AM overload mitigation, faster scanning, and restoration of custom receive/gain state after scanning. The public updater in this repository remains `v1.0.0` until the experimental work is considered ready for release.
 
 ## Highlights
 
@@ -44,7 +46,7 @@ The A/B display has been adjusted to make the expanded frequency format practica
 
 ### Four modulation modes
 
-The firmware supports four explicit receive/modulation modes:
+The public `v1.0.0` firmware supports four explicit receive/modulation modes:
 
 - **FM**
 - **NFM**
@@ -53,15 +55,19 @@ The firmware supports four explicit receive/modulation modes:
 
 The selected mode is stored per memory channel and for **VFO-A/VFO-B** in a custom EEPROM modulation table.
 
+Experimental `v1.1.x` development extends this work with receive-only **USB** and **LSB** modes. These experimental builds are not yet the public release in this repository.
+
 ### PF2 modulation mode cycling
 
-PF2 Long Press can cycle directly through the four modulation modes:
+PF2 Long Press can cycle directly through the four public-release modulation modes:
 
 ```text
 FM -> NFM -> AM -> NAM -> FM
 ```
 
 The displayed mode updates immediately when changed.
+
+Experimental `v1.1.x` builds extend this cycle to include USB and LSB and also experiment with independent PF2-short RF gain control.
 
 ### 8-character channel names
 
@@ -80,7 +86,7 @@ The custom CHIRP driver exposes both VFOs as special channels:
 - `VFO-A`
 - `VFO-B`
 
-Both support the expanded frequency range and all four modulation modes.
+Both support the expanded frequency range and all four public-release modulation modes.
 
 ## CHIRP driver features
 
@@ -257,8 +263,25 @@ SHA-256  3a4a484a8692dab5723738637871240f5861f4cc4cfba32231689e76f03adc97
 - Channel-name support
 - CHIRP read/write operation
 
+Development continues in the experimental `v1.1.x` line. Those builds are being tested on physical RT-830 hardware before being promoted to a public release.
+
+## Acknowledgements and prior BK4819 work
+
+This project contains original RT-830 reverse engineering, firmware patching, display work, EEPROM extensions, CHIRP integration, and extensive on-radio testing, but it does **not** exist in isolation. A great deal of useful knowledge about the **BK4819** radio IC and the surrounding firmware architecture has been developed openly by other radio-firmware projects.
+
+Special thanks and credit to:
+
+- **DualTachyon** — for foundational open-firmware and reverse-engineering work in the BK4819 radio ecosystem, including the Quansheng UV-K5 open firmware and the Radtel RT-890 OEFW work that made many BK4819 behaviors much easier to understand and compare.
+- **OneOfEleven** — for extensive BK4819 experimentation, particularly the AM demodulator overload / RF front-end gain work, gain tables, and many practical radio-control and scanning ideas. The experimental RT-830 continuous AM gain work is directly informed by this research.
+- **egzumer** — for combining and refining work from OneOfEleven, fagci, and DualTachyon in `uv-k5-firmware-custom`, and for documenting and demonstrating features such as improved AM reception, fast scanning, SSB reception, configurable controls, and other BK4819 refinements that provide valuable reference points for this project.
+- **fagci** — for important experimentation in the UV-K5/BK4819 community, including spectrum-analysis and SSB-related work that became part of the broader firmware ecosystem used as a technical reference.
+- **OEFW-community / RT-890 custom-firmware contributors** — for publishing source code and continued work on another Radtel/BK4819 platform, including a port of OneOfEleven's AM fix, reworked scanning, configurable shortcuts, RF/squelch improvements, and other implementation details that have been extremely useful for comparison while reverse engineering the RT-830.
+- **The wider BK4819 custom-firmware community** — many developers, testers, and reverse engineers have documented registers, RF behavior, quirks, and workarounds over time. Even where code is not directly reused, that accumulated knowledge saves enormous amounts of duplicated effort.
+
+Credit above is intended to acknowledge prior art and technical inspiration, not to imply that the RT-830 is firmware-compatible with the UV-K5, RT-890, or any other BK4819 radio. The RT-830 has its own firmware image, memory layout, user interface, and hardware-specific behavior, and all changes in this repository must be independently adapted and tested on this platform.
+
 ## Disclaimer
 
-This is an independent community project and is **not affiliated with or endorsed by Radtel, Abbree, iRadio, Beken, or the CHIRP project**.
+This is an independent community project and is **not affiliated with or endorsed by Radtel, Abbree, iRadio, Beken, Quansheng, DualTachyon, OneOfEleven, egzumer, fagci, OEFW-community, or the CHIRP project**.
 
 Keep a backup of your original radio configuration before experimenting with custom firmware.
